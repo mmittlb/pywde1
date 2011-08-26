@@ -140,12 +140,12 @@ class WDE1(object):
 
     def _notify(self, id_map):
         for key in id_map:
-            id = int(key)
+            int_key = int(key)
             for (obs,adr) in self._observers:
-                if adr == None or adr == id:
-                    obs(id_map[key], self._sensors[id])
+                if adr == None or adr == int_key:
+                    obs(id_map[key], self._sensors[int_key])
 
-    def start_reading(self, blocking=True):
+    def start_reading(self):
         self.ser.open()
         line = self.ser.readline()
         while True:
