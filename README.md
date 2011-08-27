@@ -14,6 +14,7 @@ Requirements
 ### Linux 
 
 It is important to have a kernel with the following modules loaded:
+
 - usbserial
 - cp210x
 
