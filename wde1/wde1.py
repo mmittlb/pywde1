@@ -112,29 +112,24 @@ class WDE1(object):
             typ = self._update_sensor(values[i], i, "temperature")
             if typ:
                 notify_ids[str(i)] = typ
-                continue
             typ = self._update_sensor(values[i+8], i, "humidity")
             if typ:
                 notify_ids[str(i)] = typ
         typ = self._update_sensor(values[16], WDE1.ADR_KOMBI, "temperature")
         if typ:
             notify_ids[str(i)] = typ
-        if not str(WDE1.ADR_KOMBI) in notify_ids:
-            typ = self._update_sensor(values[17], WDE1.ADR_KOMBI, "humidity")
-            if typ:
-                notify_ids[str(WDE1.ADR_KOMBI)] = typ
-        if not str(WDE1.ADR_KOMBI) in notify_ids:
-            typ = self._update_sensor(values[18], WDE1.ADR_KOMBI, "windspeed")
-            if typ:
-                notify_ids[str(WDE1.ADR_KOMBI)] = typ
-        if not str(WDE1.ADR_KOMBI) in notify_ids:
-            typ = self._update_sensor(values[19], WDE1.ADR_KOMBI, "raincycles")
-            if typ:
-                notify_ids[str(WDE1.ADR_KOMBI)] = typ
-        if not str(WDE1.ADR_KOMBI) in notify_ids:
-            typ = self._update_sensor(values[20], WDE1.ADR_KOMBI, "rain")
-            if typ:
-                notify_ids[str(WDE1.ADR_KOMBI)] = typ
+        typ = self._update_sensor(values[17], WDE1.ADR_KOMBI, "humidity")
+        if typ:
+            notify_ids[str(WDE1.ADR_KOMBI)] = typ
+        typ = self._update_sensor(values[18], WDE1.ADR_KOMBI, "windspeed")
+        if typ:
+            notify_ids[str(WDE1.ADR_KOMBI)] = typ
+        typ = self._update_sensor(values[19], WDE1.ADR_KOMBI, "raincycles")
+        if typ:
+            notify_ids[str(WDE1.ADR_KOMBI)] = typ
+        typ = self._update_sensor(values[20], WDE1.ADR_KOMBI, "rain")
+        if typ:
+            notify_ids[str(WDE1.ADR_KOMBI)] = typ
 
         return notify_ids
 
