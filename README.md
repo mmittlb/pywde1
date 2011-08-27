@@ -7,6 +7,17 @@ wheather data receiver.
 The specification document can be found at
 http://www.elv-downloads.de/Assets/Produkte/9/920/92030/Downloads/92030_USB_WDE1_V1.0_UM.pdf
 
+
+Requirements
+------------
+
+### Linux 
+
+It is important to have a kernel with the following modules loaded:
+- usbserial
+- cp210x
+
+
 Install
 -------
 
@@ -15,13 +26,15 @@ Under any Posix compliant environment the install is just as easy as typing
     python setup.py build
     sudo python setup.py install
 
-### Dependencies
+### Library dependencies
 - pyserial
+
 
 Examples
 --------
 
 Look at the example files that can be found in the `examples/` subdirectory.
+
 
 License
 -------
