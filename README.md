@@ -4,7 +4,7 @@ pywde1
 `pywde1` is a simple wrapper library used to retrieve data from ELV USB-WDE1
 wheather data receiver.
 
-The library is designed around the [WDE1 Spec][1].
+The library is designed around the [WDE1 specification][1].
 
 
 Requirements
@@ -14,14 +14,14 @@ Requirements
 
 It is important to have a kernel with the following modules loaded:
 
-- usbserial
+- [usbserial][2]
 - cp210x
 
 
 Install
 -------
 
-Under any Posix compliant environment the install is just as easy as typing
+Under any sudo enabled Linux environment the install is just as easy as typing
 
 ```bash
 python setup.py build
@@ -62,7 +62,5 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-Links
------
-
-[1]: http://www.elv-downloads.de/Assets/Produkte/9/920/92030/Downloads/92030_USB_WDE1_V1.0_UM.pdf "WDE1 Spec"
+[1]: http://www.elv-downloads.de/Assets/Produkte/9/920/92030/Downloads/92030_USB_WDE1_V1.0_UM.pdf "WDE1 specification"
+[2]: http://www.kernel.org/doc/Documentation/usb/usb-serial.txt "usbserial"
