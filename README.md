@@ -7,6 +7,22 @@ wheather data receiver.
 The library is designed around the [WDE1 specification][1].
 
 
+Notes for the USB WDE1 data receiver
+------------------------------------
+
+The receiver itself does not provide any information on which sensor state 
+changed, but instead sends the complete dataframe containing all sensors. This
+is far from ideal.
+
+As a consequence, the library provides mechanisms that one is only notified on
+actual changes, i.e. phenomenon values changing. But since other use-cases may
+need it, there also exists a mechanism to get a sensors state on the general 
+update, i.e. at any time any sensor updates the receiver.
+
+- Timeout for a sensor to be recognized as unreachable: 10 minutes
+- Sensor updating frequency: 2.5-3 minutes (5-6 mHz)
+
+
 Requirements
 ------------
 
