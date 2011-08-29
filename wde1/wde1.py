@@ -22,6 +22,8 @@
 
 import re
 import serial
+import threading
+import time
 
 class FormatError(BaseException):
 
@@ -31,7 +33,65 @@ class FormatError(BaseException):
     def __str__(self):
         return ("FormatError: {0}".format(self._msg))
 
-class WDE1(object):
+
+class Event(object):
+    pass
+
+
+class Sensor(object):
+
+    def __init__(self, adr, kombi=False):
+        self._values = None
+
+        if not kombi:
+            self._values = {
+                "temperature": None,
+                "humidity": None,
+            }
+        else:
+            self._values = {
+                "temperature": None,
+                "humidity": None,
+                "windspeed": None,
+                "raincycles": None,
+                "rain": None
+            }
+        self._kombi = kombi
+        self._adr = adr
+        self._changed = False
+        self._timestamp = int(time.time())
+        self._event_type = WDE1.SENSOR_UNREACHABLE
+
+    def __setattr__(self, key, value):
+        if key not in ["temperature", "humidity", "windspeed", "raincycles",
+                "rain"]:
+            object.__setattr__(self, key, value)
+        else:
+            if self._values[key] == None and value != None:
+                self._event_type = WDE1.SENSOR_AVAILABLE
+            if self._values[key] != None and value == None:
+                self._event_type = WDE1.SENSOR_UNREACHABLE
+            if self._values[key] != None and value != None:
+                self._event_type = WDE1.SENSOR_UPDATE
+            self._timestamp = int(time.time())
+            if self._values[key] != value:
+                self._changed = True
+            self._values[key] = value
+
+    def get_event(self):
+        e = Event()
+        for key in self._values:
+            setattr(e, key, self._values[key])
+        e.timestamp = self._timestamp
+        e.adr = self._adr
+        e.changed = self._changed
+        e.event_type = self._event_type
+        e.kombi = self._kombi
+        self._changed = False
+        return e
+
+
+class WDE1(threading.Thread):
 
     ADR_KOMBI = 8
 
@@ -39,32 +99,35 @@ class WDE1(object):
     SENSOR_UPDATE = "SENSOR_UPDATE"
     SENSOR_UNREACHABLE = "SENSOR_UNREACHABLE"
 
+    NOTIFY_CHANGE = 1
+    NOTIFY_ALL = 2
+
     def __init__(self, port):
+        threading.Thread.__init__(self)
+        self.daemon = True
         self._observers = []
-        self._sensors = [ 
-          {"adr": i, 
-           "temperature": None, 
-           "humidity": None} for i in range(8)] + [{ 
-           "adr": WDE1.ADR_KOMBI, 
-           "temperature": None, 
-           "humidity":None,
-           "windspeed":None, 
-           "raincycles":None, 
-           "rain": None}
-        ]
+        self._observers_all = []
+
+        self._sensors2 = [Sensor(i) for i in range(8)]
+        self._sensors2.append(Sensor(8, kombi=True))
+
         self.ser = serial.Serial(port)
 
-    def add_observer(self, fn, adr=None):
-        if not (fn,adr) in self._observers:
-            self._observers.append((fn,adr))
-
-    def remove_observer(self, fn, adr=None):
-        if (fn,adr) in self._observers:
-            self._observers.remove((fn,adr))
+    def add_observer(self, fn, adr=None, notify=NOTIFY_CHANGE):
+        if notify == WDE1.NOTIFY_CHANGE:
+            if not (fn,adr) in self._observers:
+                self._observers.append((fn,adr))
+        else:
+            if not (fn,adr) in self._observers_all:
+                self._observers_all.append((fn,adr))
 
     @property
-    def observers(self):
+    def observers_change(self):
         return self._observers
+
+    @property
+    def observers_all(self):
+        return self._observers_all
 
     def _parse_line(self, raw):
         matches = re.search(
@@ -93,61 +156,51 @@ class WDE1(object):
         values[20] = True if values[20] == "1" else False
         return values
 
-    def _update_sensor(self, value, check_index, check_phen):
-        if self._sensors[check_index][check_phen] != value:
-            if self._sensors[check_index][check_phen] == None and value != None:
-                typ =  WDE1.SENSOR_AVAILABLE
-            if self._sensors[check_index][check_phen] != None and value != None:
-                typ =  WDE1.SENSOR_UPDATE
-            if self._sensors[check_index][check_phen] != None and value == None:
-                typ = WDE1.SENSOR_UNREACHABLE
-            self._sensors[check_index][check_phen] = value
-            return typ
-        return None
-
-
     def _update_state(self, values):
-        notify_ids = {}
-        for i in range(0, 7):
-            typ = self._update_sensor(values[i], i, "temperature")
-            if typ:
-                notify_ids[str(i)] = typ
-            typ = self._update_sensor(values[i+8], i, "humidity")
-            if typ:
-                notify_ids[str(i)] = typ
-        typ = self._update_sensor(values[16], WDE1.ADR_KOMBI, "temperature")
-        if typ:
-            notify_ids[str(i)] = typ
-        typ = self._update_sensor(values[17], WDE1.ADR_KOMBI, "humidity")
-        if typ:
-            notify_ids[str(WDE1.ADR_KOMBI)] = typ
-        typ = self._update_sensor(values[18], WDE1.ADR_KOMBI, "windspeed")
-        if typ:
-            notify_ids[str(WDE1.ADR_KOMBI)] = typ
-        typ = self._update_sensor(values[19], WDE1.ADR_KOMBI, "raincycles")
-        if typ:
-            notify_ids[str(WDE1.ADR_KOMBI)] = typ
-        typ = self._update_sensor(values[20], WDE1.ADR_KOMBI, "rain")
-        if typ:
-            notify_ids[str(WDE1.ADR_KOMBI)] = typ
+        for i in range(0, 8):
+            self._sensors2[i].temperature = values[i]
+            self._sensors2[i].humidity = values[i+8]
+        self._sensors2[WDE1.ADR_KOMBI].temperature = values[16]
+        self._sensors2[WDE1.ADR_KOMBI].humidity = values[17]
+        self._sensors2[WDE1.ADR_KOMBI].windspeed = values[18]
+        self._sensors2[WDE1.ADR_KOMBI].raincycles = values[19]
+        self._sensors2[WDE1.ADR_KOMBI].rain = values[20]
 
-        return notify_ids
-
-    def _notify(self, id_map):
-        for key in id_map:
+    def _notify(self):
+        for key in ["0", "1", "2", "3", "4", "5", "6", "7", "8"]:
             int_key = int(key)
-            for (obs,adr) in self._observers:
+            e = self._sensors2[int_key].get_event()
+            if e.changed:
+                for (obs,adr) in self._observers:
+                    if adr == None or adr == int_key:
+                        t= threading.Thread(target=obs,
+                                args=(self,e))
+                        t.start()
+            for (obs,adr) in self._observers_all:
                 if adr == None or adr == int_key:
-                    obs(id_map[key], self._sensors[int_key])
+                    t= threading.Thread(target=obs,
+                            args=(self,e))
+                    t.start()
 
-    def start_reading(self):
+    def start_reading(self,blocking=True):
+        self._run = True
+        if blocking:
+            self._do_run()
+        else:
+            self.start()
+
+    def _do_run(self):
         self.ser.open()
         line = self.ser.readline()
-        while True:
+        while self._run:
             values = self._parse_line(line)
-            ids = self._update_state(values)
-            self._notify(ids)
+            self._update_state(values)
+            self._notify()
             line = self.ser.readline()
 
+    def run(self):
+        self._do_run()
+
     def close(self):
+        self._run = False
         self.ser.close()
