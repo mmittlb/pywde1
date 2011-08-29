@@ -110,7 +110,7 @@ class WDE1(threading.Thread):
 
         self._sensors2 = [Sensor(i) for i in range(8)]
         self._sensors2.append(Sensor(8, kombi=True))
-
+        self._version = None
         self.ser = serial.Serial(port)
 
     def add_observer(self, fn, adr=None, notify=NOTIFY_CHANGE):
@@ -128,6 +128,25 @@ class WDE1(threading.Thread):
     @property
     def observers_all(self):
         return self._observers_all
+
+    @property
+    def version(self):
+        if not self._version:
+            self._version = self._get_version()
+        return self._version
+
+    def _get_version(self):
+        if not self.ser.isOpen():
+            self.ser.open()
+        self.ser.flushInput
+        self.ser.flushOutput()
+        self.ser.write("?")
+        self.ser.readline() # empty line
+        line2 = self.ser.readline()
+        self.ser.readline() # baud rate
+        #TODO: error handling
+        matches = re.match("^ELV USB-WDE1 v([0-9.]+)", line2)
+        return matches.group(1)
 
     def _parse_line(self, raw):
         matches = re.search(
