@@ -186,7 +186,7 @@ class WDE1(threading.Thread):
         self._sensors2[WDE1.ADR_KOMBI].rain = values[20]
 
     def _notify(self):
-        for key in [0, 1, 2, 3, 4, 5, 6, 7, 8]:
+        for key in range(0, 9):
             e = self._sensors2[key].get_event()
             if e.changed:
                 for (obs,adr) in self._observers:
