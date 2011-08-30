@@ -35,6 +35,28 @@ class FormatError(BaseException):
 
 
 class Event(object):
+    """Event represents a notification event that holds all relevant information
+    of a sensor update.
+
+    Attributes:
+        - adr:          The address of the sensor represented as integer.
+                        Ranging from 0 to 7 if sensor is not a kombi sensor, 8
+                        otherwise.
+        - timestamp:    The Unix timestamp of the measurement.
+        - kombi:        True if this sensor represents a kombi sensor, False
+                        otherwise.
+        - changed:      True if anything changed regarding the last state of the
+                        sensor.
+        - event_type:   The type of the event. Represents one of WDE1.SENSOR_*.
+        - temperature:  The current temperature of the wheather sensor.
+        - humidity:     The current humidity of the wheather sensor.
+        - windspeed:    The current windspeed if the event represents a kombi
+                        sensor.
+        - raincycles:   The current raincycles if the event represents a kombi
+                        sensor.
+        - rain:         True if the sensor is a kombi one and it is raining,
+                        False otherwise.
+    """
     pass
 
 
