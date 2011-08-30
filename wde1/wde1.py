@@ -60,7 +60,7 @@ class Event(object):
     pass
 
 
-class Sensor(object):
+class _Sensor(object):
 
     def __init__(self, adr, kombi=False):
         self._values = None
@@ -130,7 +130,7 @@ class WDE1(threading.Thread):
         self._observers = []
         self._observers_all = []
 
-        self._sensors2 = [Sensor(i) for i in range(8)]
+        self._sensors2 = [_Sensor(i) for i in range(8)]
         self._sensors2.append(Sensor(8, kombi=True))
         self._version = None
         self.ser = serial.Serial(port)
