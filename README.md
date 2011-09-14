@@ -46,6 +46,7 @@ sudo python setup.py install
 
 ### Library dependencies
 - pyserial
+- python-setuptools
 
 
 Examples

@@ -131,7 +131,7 @@ class WDE1(threading.Thread):
         self._observers_all = []
 
         self._sensors2 = [_Sensor(i) for i in range(8)]
-        self._sensors2.append(Sensor(8, kombi=True))
+        self._sensors2.append(_Sensor(8, kombi=True))
         self._version = None
         self.ser = serial.Serial(port)
 
