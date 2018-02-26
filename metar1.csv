@@ -1,2 +1,2 @@
-stationId;rawText;observationTime;latitude;longitude;elevation;temp;dewpoint;windDirection;windSpeed;visibility;altim;qualityControlFlag;skyCondition1a;skyCondition1b;skyCondition2a;skyCondition2b;flightCategory;metarType
-LOWS;LOWS 261520Z 05007KT 010V090 9999 FEW030 BKN045 M09/M18 Q1018 NOSIG;2018-02-26T15:20:00Z;47.78;13.02;430.0;-9.0;-18.0;50;12.964;6.21;30.059055;TRUE;FEW;3000;BKN;4500;VFR;METAR
+stationId;observationTime;latitude;longitude;elevation;temp;dewpoint;windDirection;windSpeed;visibility;altim;qualityControlFlag;skyCondition1a;skyCondition1b;skyCondition2a;skyCondition2b;flightCategory;metarType
+LOWS;2018-02-26T15:20:00Z;47.78;13.02;430.0;-9.0;-18.0;50;12.964;6.21;30.059055;TRUE;FEW;3000;BKN;4500;VFR;METAR
