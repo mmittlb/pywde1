@@ -1,2 +1,2 @@
-ID,Latitude,Longitude
-1,47.13,13.1
+ID,latitude,longitude,text
+1,47.13,13.1,"hallo"
