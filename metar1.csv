@@ -1,2 +1,2 @@
-ID,latitude,longitude,text,text2
-1,47.13,13.1,hallo,hallo2
+stationId;observationTime;latitude;longitude;elevation;temp;dewpoint;windDirection;windSpeed;visibility;altim;qualityControlFlag;skyCondition1a;skyCondition1b;skyCondition2a;skyCondition2b;flightCategory;metarType
+LOWS;2018-02-26T15:50:00Z;47.78;13.02;430.0;-9.0;-18.0;60;14.816;6.21;30.059055;TRUE;FEW;3000;BKN;4500;VFR;METAR
