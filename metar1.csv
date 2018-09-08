@@ -1,2 +1,2 @@
 stationId;observationTime;latitude;longitude;elevation;temp;dewpoint;windDirection;windSpeed;visibility;altim;qualityControlFlag;skyCondition1a;skyCondition1b;skyCondition2a;skyCondition2b;flightCategory;metarType
-LOWS;2018-09-08T04:50:00Z;47.78;13.02;430;14;14;70;5.556;6.21;30.147638;TRUE;FEW;300;SCT;3800;VFR;METAR
+LOWS;2018-09-08T05:50:00Z;47.78;13.02;430;14;13;160;5.556;6.21;30.177166;TRUE;FEW;800;BKN;4000;VFR;METAR
