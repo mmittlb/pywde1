@@ -1,2 +1,2 @@
 stationId;observationTime;latitude;longitude;elevation;temp;dewpoint;windDirection;windSpeed;visibility;altim;qualityControlFlag;skyCondition1a;skyCondition1b;skyCondition2a;skyCondition2b;flightCategory;metarType
-LOWS;2019-04-15T05:50:00Z;47.78;13.02;430;5;4;0;1.852;3.73;30.206694;TRUE;FEW;600;SCT;1500;MVFR;METAR
+LOWS;2019-04-15T06:50:00Z;47.78;13.02;430;6;4;0;1.852;4.35;30.206694;TRUE;FEW;600;SCT;1400;MVFR;METAR
