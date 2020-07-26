@@ -1,2 +1,2 @@
 stationId;observationTime;latitude;longitude;elevation;temp;dewpoint;windDirection;windSpeed;visibility;altim;qualityControlFlag;skyCondition1a;skyCondition1b;skyCondition2a;skyCondition2b;flightCategory;metarType
-LOWS;2020-07-26T04:50:00Z;47.78;13.02;430;16;12;150;18.52;6.21;29.911417;TRUE;FEW;8000;BKN;9000;VFR;METAR
+LOWS;2020-07-26T05:50:00Z;47.78;13.02;430;17;12;150;20.372;6.21;29.911417;TRUE;FEW;8000;BKN;12000;VFR;METAR
