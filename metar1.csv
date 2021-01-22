@@ -1,2 +1,2 @@
 stationId;observationTime;latitude;longitude;elevation;temp;dewpoint;windDirection;windSpeed;visibility;altim;qualityControlFlag;skyCondition1a;skyCondition1b;skyCondition2a;skyCondition2b;flightCategory;metarType
-LOWS;2021-01-22T16:50:00Z;47.78;13.02;427;7;2;100;11.112;6.21;29.320866;TRUE;FEW;7000;BKN;11000;VFR;METAR
+LOWS;2021-01-22T17:50:00Z;47.78;13.02;427;9;0;0;11.112;6.21;29.320866;TRUE;FEW;7000;BKN;12000;VFR;METAR
